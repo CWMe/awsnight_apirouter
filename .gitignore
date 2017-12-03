@@ -1,0 +1,19 @@
+/apirouter/target/
+*.class
+.gradle
+/build/
+/bin/
+/.settings/
+/apirouter/target/
+.project
+.classpath
+target
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Serverless directories
+.serverless
+
