@@ -1,6 +1,12 @@
 package com.codewithme.apirouter;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class URLRequest {
+    
+    @JsonProperty(required = true, value = "url")
     private String url;
 
     public URLRequest() {
