@@ -1,5 +1,6 @@
 package com.codewithme.apirouter;
 
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
     private static final Lock LOCK = new ReentrantLock(true);
     private static final RestClient REST_CLIENT = new RestClient();
     private static final Logger LOG = Logger.getLogger(Handler.class);
+    private static final AWSS3Util s3 = new AWSS3Util(new DefaultAWSCredentialsProviderChain());
 
     static {
         LOCK.lock();
@@ -41,7 +43,7 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
                 JsonNode response = REST_CLIENT.resteasy(urlRequest.getUrl());
 
                 LOG.info(JsonUtil.OBJECT_MAPPER.writeValueAsString(response));
-
+                
                 return ApiGatewayResponse.builder()
                         .setStatusCode(200)
                         .setObjectBody(new Response(JsonUtil.OBJECT_MAPPER.writeValueAsString(response)))
