@@ -33,8 +33,11 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         if (input != null && input.isEmpty() == false) {
+            LOG.debug("Input is good");
             Object body = input.get("body");
+            LOG.debug(body.toString());
             if (body != null && body instanceof Map && ((Map) body).get("url") != null) {
+                LOG.debug("Body is good");
                 String url = (String) ((Map) body).get("url");
                 LOG.debug("Received URL: " + url);
                 try {
