@@ -2,9 +2,10 @@ package com.codewithme.apirouter;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class URLRequest {
+public class URLRequest implements Serializable {
     
     @JsonProperty(required = true, value = "url")
     private String url;
