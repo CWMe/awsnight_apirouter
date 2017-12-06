@@ -1,10 +1,6 @@
 package com.codewithme.apirouter;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
@@ -36,7 +32,7 @@ public class RestClient {
     public Article resteasy(URLRequest urlRequest) throws IOException {
         WebTarget target = REST_CLIENT.target("https://urjtpjq5t8.execute-api.us-east-1.amazonaws.com").path("Prod/cleanarticle");
         Invocation.Builder invoke = target.request();
-        return invoke.put(Entity.json(urlRequest), Article.class);
+        return invoke.put(Entity.json(JsonUtil.OBJECT_MAPPER.writeValueAsString(urlRequest)), Article.class);
     }
 
 }
