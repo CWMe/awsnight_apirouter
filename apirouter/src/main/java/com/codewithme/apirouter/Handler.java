@@ -36,6 +36,9 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
             LOG.debug("Input is good");
             Object body = input.get("body");
             LOG.debug(body.toString());
+            LOG.debug(body != null);
+            LOG.debug(body instanceof Map);
+            LOG.debug(((Map) body).get("url") != null);
             if (body != null && body instanceof Map && ((Map) body).get("url") != null) {
                 LOG.debug("Body is good");
                 String url = (String) ((Map) body).get("url");
