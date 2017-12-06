@@ -32,43 +32,36 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
-        if (input != null && input.isEmpty() == false) {
-            LOG.debug("Input is good");
-            Object body = input.get("body");
-            LOG.debug(body.toString());
-            LOG.debug(body != null);
-            LOG.debug(body instanceof Map);
-            LOG.debug(body.getClass().getCanonicalName());
-            LOG.debug(((Map) body).get("url") != null);
-            if (body != null && body instanceof Map && ((Map) body).get("url") != null) {
-                LOG.debug("Body is good");
-                String url = (String) ((Map) body).get("url");
-                LOG.debug("Received URL: " + url);
-                try {
-                    JsonNode response = REST_CLIENT.resteasy(url);
+        try {
+            if (input != null && input.isEmpty() == false) {
+                String url = (String) input.get("body");
+                URLRequest urlRequest = JsonUtil.OBJECT_MAPPER.readValue(url, URLRequest.class);
+                LOG.debug("Received URL: " + urlRequest.getUrl());
 
-                    LOG.info(JsonUtil.OBJECT_MAPPER.writeValueAsString(response));
+                JsonNode response = REST_CLIENT.resteasy(urlRequest.getUrl());
 
-                    return ApiGatewayResponse.builder()
-                            .setStatusCode(200)
-                            .setObjectBody(new Response(JsonUtil.OBJECT_MAPPER.writeValueAsString(response)))
-                            .setHeaders(HEADERS)
-                            .build();
-                } catch (IOException ex) {
-                    LOG.error(ex);
-                    return ApiGatewayResponse.builder()
-                            .setStatusCode(502)
-                            .setObjectBody(new Response(ex.getMessage()))
-                            .setHeaders(HEADERS)
-                            .build();
-                }
+                LOG.info(JsonUtil.OBJECT_MAPPER.writeValueAsString(response));
+
+                return ApiGatewayResponse.builder()
+                        .setStatusCode(200)
+                        .setObjectBody(new Response(JsonUtil.OBJECT_MAPPER.writeValueAsString(response)))
+                        .setHeaders(HEADERS)
+                        .build();
+
             }
+        } catch (IOException ex) {
+            LOG.error(ex);
+            return ApiGatewayResponse.builder()
+                    .setStatusCode(502)
+                    .setObjectBody(new Response(ex.getMessage()))
+                    .setHeaders(HEADERS)
+                    .build();
         }
-        return ApiGatewayResponse.builder()
-                            .setStatusCode(502)
-                            .setObjectBody(new Response("Well, this is odd..."))
-                            .setHeaders(HEADERS)
-                            .build();
-    }
 
+        return ApiGatewayResponse.builder()
+                        .setStatusCode(502)
+                        .setObjectBody(new Response("Well, this is odd..."))
+                        .setHeaders(HEADERS)
+                        .build();
+    }
 }
