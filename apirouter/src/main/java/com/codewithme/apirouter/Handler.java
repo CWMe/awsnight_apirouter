@@ -9,6 +9,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -40,9 +41,15 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
                 URLRequest urlRequest = JsonUtil.OBJECT_MAPPER.readValue(url, URLRequest.class);
                 LOG.debug("Received URL: " + urlRequest.getUrl());
 
-                JsonNode response = REST_CLIENT.resteasy(urlRequest.getUrl());
+                Article response = REST_CLIENT.resteasy(urlRequest);
 
                 LOG.info(JsonUtil.OBJECT_MAPPER.writeValueAsString(response));
+                
+                StringBuilder data = new StringBuilder();
+                data.append(urlRequest.getUrl())
+                        .append(url);
+                
+                s3.putS3Object("cwm-articles", UUID.randomUUID().toString(), url);
                 
                 return ApiGatewayResponse.builder()
                         .setStatusCode(200)

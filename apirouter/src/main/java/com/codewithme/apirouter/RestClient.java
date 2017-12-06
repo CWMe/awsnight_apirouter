@@ -33,14 +33,10 @@ public class RestClient {
         REST_CLIENT = new ResteasyClientBuilder().httpEngine(engine).connectionPoolSize(125).build();
     }
 
-    public JsonNode resteasy(String url) throws IOException {
-        Map<String, String> urlMap = new HashMap<>();
-        urlMap.put("url", url);
+    public Article resteasy(URLRequest urlRequest) throws IOException {
         WebTarget target = REST_CLIENT.target("https://urjtpjq5t8.execute-api.us-east-1.amazonaws.com").path("Prod/cleanarticle");
         Invocation.Builder invoke = target.request();
-        ObjectNode node = JsonUtil.OBJECT_MAPPER.createObjectNode();
-        node = node.put("url", url);
-        return invoke.put(Entity.json(node), JsonNode.class);
+        return invoke.put(Entity.json(urlRequest), Article.class);
     }
 
 }
