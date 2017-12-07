@@ -1,8 +1,10 @@
-Welcome to the AWS CodeStar sample web service
+Welcome to the Code With Me - AWS Night Demo application
 ==============================================
 
-This sample code helps get you started with a simple Java web service using
-AWS Lambda and Amazon API Gateway.
+This project will demonstrate several things:
+
+* Building an application with the AWS DevOps pipeline (GitHub -> CodePipeline -> CodeBuild)
+
 
 What's Here
 -----------

@@ -9,7 +9,7 @@ Parameters:
     Description: CodeWithMe project to accept URL's and process them
 
 Resources:
-  PostHelloWorld:
+  APIRouterApp:
     Type: AWS::Serverless::Function
     Properties:
       Handler: com.codewithme.apirouter.Handler
