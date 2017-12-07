@@ -45,16 +45,7 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 
                 LOG.info(JsonUtil.OBJECT_MAPPER.writeValueAsString(response));
                 
-                StringBuilder data = new StringBuilder();
-                data.append(response.getUrl())
-                        .append("\n\n")
-                        .append(response.getTitle())
-                        .append("\n\n")
-                        .append(response.getPublished_date())
-                        .append("\n\n")
-                        .append(response.getBody());
-                
-                s3.putS3Object("cwm-articles", UUID.randomUUID().toString(), data.toString());
+                s3.putS3Object("cwm-articles", UUID.randomUUID().toString(), JsonUtil.OBJECT_MAPPER.writeValueAsString(response));
                 
                 return ApiGatewayResponse.builder()
                         .setStatusCode(200)
